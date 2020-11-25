@@ -1,15 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#define N 6
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
 //보드판 초기화 상태  
 void main(int argc, char *argv[]) {
-	int gameboard[6][6]={0};   
-	int Done = 0;
-	int stone_row, stone_col ;   
-	
-	board();                         //초기화 된 게임판 생성
+	int gameboard[6][6]={0};   //다른 함수들이 알 수 있게하려면 나중에 전역변수로 빼야 할 것같은데?? 
+	int again = 0;
+	   
+	board(gameboard);                         //초기화 된 게임판 생성
 	  
 	gameboard[2][2] = 1; 	gameboard[3][3] = 1;
 	gameboard[2][3] = 2; 	gameboard[3][2] = 2;
@@ -17,28 +16,30 @@ void main(int argc, char *argv[]) {
 	STATUS(x,y,gameboard);           //printf로 상황을 출력한다. 
 	stone(gameboard);                 //돌 상황 ox로 시각화. 
 	
-	while(1){
+	while(isGameEnd() == 0){             //isGameEnd함수 만들어야한다.!!!!!!!return0;=>종료, return1;게임 안끝남. 
 	white:
-		stone(gameboard);               //흑돌.백돌 상황 ox로 시각화
+		find_space_W(gameboard);   //흰색 차례일때 사용되며 흰돌을 둘 수 있는 곳을 찾아준다.
+		stone(gameboard);               //흑돌.백돌 상황 ox로 시각화		
+		
 		if (is_that_finish(gameboard) == 1){    //is_that_finish가 더둘 곳이 없으면 1 반환, 있으면 0반환
 			
-				Done++;                           
+				again++;                           
 
-				if (Done >= 2){                  //연속으로 둘 곳이 2번 없으면 게임이 종료된다. 
-					Finish(gameboard);
+				if (again >= 2){                  //연속으로 둘 곳이 2번 없으면 서로 더 이상 둘수 없으니 게임이 종료된다. 
+					check_result(gameboard);
 					printf("서로 둘곳이 없어 게임이 끝났습니다.");
 				}
 
 				else{
-					pass_turn(); //turn교체
-					Eliminate_Three(arr);
-					goto black;  //black turn 으로 이동. 
+					printf("둘곳이 없습니다.\n");         //turn교체
+					Eliminate_Three(gameboard);           //가능했던 자리를 다시 초기화 시켜줘야 다음 턴때 영향을 안미친다. 
+					goto black;                           //black turn 으로 이동. 
 				}
 		}			//->더 둘 곳이 있으면 if문 건너 뛰고 아래로 와야지!!!
 		
 		White_turn();       //put a new white othello 출력하는 함수 
 		
-		while(1){
+		while(!!!!!!!!){   //이부분 뭐라고 쳐야지!!! 
 			   
 			scanf("%d %d",&stone_row,&stone_col);  //백색돌을 놓을 행.열 좌표를 받는다. 
 			
