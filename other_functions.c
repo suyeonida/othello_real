@@ -26,15 +26,10 @@ int Stone(int gameboard[6][6]){          //스톤들 ox로 시각화하기
 		}
 		printf("\n--------------\n"); 
 	}
-	return gameboard[N][N]; 
+	return gameboard[6][6]; 
 }
 
-void White_turn(){
-	
-	printf("put a new white othello : ")
-	
-} 
-
+		
 int is_that_finish(int gameboard[6][6]){
 	int possible_space = 0;    //가능한 자리가 있는지 확인  
 	int x,y;
@@ -92,11 +87,7 @@ void check_result(int gameboard[6][6]){
 }
 
 		
-int put_White_stone(int stone_row, int stone_col, int gameboard[6][6]){   //가능한 자리 중에서 백돌이 가능한 자리에 백돌을 두세요!!
-
-	int stone_x = stone_row; 
-	int stone_y = stone_col;
-
+int put_White_stone(int stone_x, int stone_y, int gameboard[6][6]){   //가능한 자리 중에서 백돌이 가능한 자리에 백돌을 두세요!!
 
 	if (gameboard[stone_x][stone_y] == 3){            //3이 적혀있으면  
 		gameboard[stone_x][stone_y] = 1;              //흰색돌을 두세요  
@@ -120,8 +111,8 @@ void gameboard_cpy(int v_gameboard_cpy[6][6], int gameboard[6][6]){    //배열들�
 	}
 }
 
-int gameboard_compare(int gameboard[6][6], int gameboard_cpy[6][6])  //복사본 원본 비교하는 함수
-{
+int gameboard_compare(int gameboard[6][6], int gameboard_cpy[6][6]){ //복사본 원본 비교하는 함수
+
 	int num= 0;              //num은 복사본과 원본이 몇 칸이나 같은 지 개수를 셀 때 필요한 변수  
 	int x = 0; int y = 0;
 
@@ -137,16 +128,8 @@ int gameboard_compare(int gameboard[6][6], int gameboard_cpy[6][6])  //복사본 원
 		return 0;            //복사본과 원본이 다르다면 뒤집힌거다 (게임이 순조롭게 진행되고 있음) 
 }
 
-int eliminate_3 (int gameboard[6][6]){
-	for (int x = 0; x <= 7; x++)
-		for (int y = 0; y <= 7; y++){
-			if (gameboard[x][y] == 3)
-				gameboard[x][y] = 0;
-		}
-	return gameboard[6][6];
-}
 
-int game_over(int gameboard[6][6]){
+int isGameEnd(int gameboard[6][6]){     //흑돌,백돌로 게임판이 다 차면 게임을 종료한다. 
 	int finish = 0;
 	int White = 0;
 	int Black = 0;
@@ -168,7 +151,7 @@ int game_over(int gameboard[6][6]){
 		}
 	}
 	
-	if (finish == 64){
+	if (finish == 36){
 	
 		Stone(gameboard);
 		printf("WHITE : %d개", White);
