@@ -10,6 +10,23 @@ int board(int gameboard[6][6]) {
 	}
 	return gameboard[6][6];
 }
+void STATUS(int gameboard[6][6]){  //흑돌 백돌 개수 나타내는 함수 
+	int White = 0;  int Black = 0;
+
+	for (x = 0; x<6; x++){
+		for (y = 0; y <6; y++){
+			if (gameboard[x][y] == 0)
+				;
+			else if (gameboard[x][y] == 1)
+				White++;
+			else if (gameboard[x][y] == 2)
+				Black++;
+			else if (gaemboard[x][y] == 3)
+				;
+		}
+	}
+	printf("WHITE : %d개, BLACK : %d개 ", White, Black);
+}
 
 int Stone(int gameboard[6][6]){          //스톤들 ox로 시각화하기  
 	
@@ -45,45 +62,6 @@ int is_that_finish(int gameboard[6][6]){
 		return 1;
 	else                      //가능한 자리가 있으면 0반환 => 
 		return 0;
-}
-
-void check_result(int gameboard[6][6]){
-	int White = 0;
-	int Black = 0;
-	int x,y;
-
-	for (x = 0; x <= 7; x++){
-		for (y = 0; y <= 7; y++){
-			
-			if (gameboard[x][y] == 0)
-				;
-			else if (gameboard[x][y] == 3)
-				;
-			else if (gameboard[x][y] == 1){
-				White++;
-			}
-			else if (gameboard[x][y] == 2){
-				Black++;
-			}
-		}
-	}
-	Stone(gameboard);            //스톤들 ox문자로 시각화 하기 
-	
-	printf("WHITE : %d개", White);
-	
-	printf("BLACK : %d개", Black);
-
-	
-	if (White > Black)
-		printf("백돌 승");
-	
-	else if (White == Black)
-		printf("무승부");
-	else if (White < Black)
-		printf("흑돌 승");
-	
-
-	return 0;
 }
 
 		
@@ -227,5 +205,36 @@ int Eliminate_Three(int gameboard[6][6]) {
 	return gameboard[6][6];
 }
 
+void Finish(int gameboard[6][6]){
+	int White = 0;
+	int Black = 0;
+
+	for (x = 0; x <6; x++){
+		for (y = 0; y <6; y++){
+			if (gameboard[x][y] == 0)
+				;
+			else if (gameboard[x][y] == 3)
+				;
+			else if (gameboard[x][y] == 1)
+				White++;
+			else if (arr[x][y] == 2)
+				Black++;
+		}
+	}
+	
+	Stone(gameboard);
+	
+	printf("WHITE: %d개,Black : %d개 ", White, Black);
+	
+	if (White > Black)
+		printf("백돌 승");
+	else if (White == Black)
+		printf("무승부");
+	else if (White < Black)
+	
+		printf("흑돌 승");
+		
+	return;
+}
 	
 	 
