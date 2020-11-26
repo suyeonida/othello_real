@@ -2,18 +2,16 @@ int board(int gameboard[6][6]) {
 	int i,j;
 	printf("  0 1 2 3 4 5\n--------------\n");
 	for(i=0;i<6;i++){
-			printf("%d|",i);
+			printf("0|");
 		for(j=0;j<6;j++){
-			printf("%d|",gameboard);  
+			printf("0|");  
 		}
 	printf("\n--------------\n");
 	}
 	return gameboard[6][6];
 }
-void STATUS(int stone_x,int stone_y, gameboard[6][6]){  //흑돌 백돌 개수 나타내는 함수 
+void STATUS(gameboard[6][6]){  //흑돌 백돌 개수 나타내는 함수 
 	int x,y;
-	x=stone_x;
-	y=stone_y;
 	int White = 0;  int Black = 0;
 
 	for (x = 0; x<6; x++){
@@ -28,7 +26,7 @@ void STATUS(int stone_x,int stone_y, gameboard[6][6]){  //흑돌 백돌 개수 나타내�
 				;
 		}
 	}
-	printf("WHITE : %d개, BLACK : %d개 ", White, Black);
+	printf("WHITE : %d개, BLACK : %d개\n ", White, Black);
 }
 
 int Stone(int gameboard[6][6]){          //스톤들 ox로 시각화하기  
@@ -37,7 +35,7 @@ int Stone(int gameboard[6][6]){          //스톤들 ox로 시각화하기
 	for (i = 0; i < 6; i++){
 		
 		for (j = 0; j < 6; j++){
-			if (arr[i][j] == 0)  //돌이 없으면 공백으로  
+			if (gameboard[i][j] == 0)  //돌이 없으면 공백으로  
 				printf(" |");
 			else if (gameboard[i][j] == 1)  //흰돌을 나타내는 1은 O로  
 				printf("O|");
@@ -57,7 +55,7 @@ int is_that_finish(int gameboard[6][6]){
 		
 		for (y = 0; y <= 7; y++){
 			
-			if (arr[x][y] == 3)
+			if (gameboard[x][y] == 3)
 				possible_space++;
 		}
 	}
@@ -90,6 +88,7 @@ void gameboard_cpy(int v_gameboard_cpy[6][6], int gameboard[6][6]){    //배열들�
 			v_gameboard_cpy[x][y] = gameboard[x][y];  //gameboard 배열들을 variable gameboard copy변수에 복사하자
 		}
 	}
+	
 }
 
 int gameboard_compare(int gameboard[6][6], int gameboard_cpy[6][6]){ //복사본 원본 비교하는 함수
@@ -182,7 +181,7 @@ int find_space_W(int gameboard[6][6]){       //흰색 차례일때 사용되며 흰돌을 둘 
 
 				//Reverse_B_to_W(m_arr_cpy, col, row);   //흰돌로 뒤집힌다  (아직 함수 작성을 못했다ㅠ) 
 
-				//v_gameboard_cpy[x][y] = num;             //복사본에 player가 둔 자리에 돌을 놔야하니까 num변수가 필요함. 
+				v_gameboard_cpy[x][y] = num;             //복사본에 player가 둔 자리에 돌을 놔야하니까 num변수가 필요함. 
 
 				if (gameboard_compare(gameboard, v_gameboard_cpy) == 1)  //복사본 원본 그대로면 white가 둘 수 있는 곳이 아니다.  
 					;

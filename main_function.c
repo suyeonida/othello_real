@@ -4,7 +4,7 @@
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
 int board(int gameboard[6][6]);
-
+void STATUS(int gameboard[6][6]);
 int Stone(int gameboard[6][6]);
 int is_that_finish(int gameboard[6][6]);
 int put_White_stone(int stone_x, int stone_y, int gameboard[6][6]);
@@ -13,29 +13,33 @@ int gameboard_compare(int gameboard[6][6], int gameboard_cpy[6][6]);
 int isGameEnd(int gameboard[6][6]);
 int find_space_W(int gameboard[6][6]);
 int Eliminate_Three(int gameboard[6][6]);
-
+void gameboard_cpy(int v_gameboard_cpy[6][6], int gameboard[6][6]);
 int put_Black_stone(int stone_x, int stone_y, int gameboard[6][6]);
 
  
 //보드판 초기화 상태  
 void main(int argc, char *argv[]) {
-	int gameboard[6][6]={0};   //다른 함수들이 알 수 있게하려면 나중에 전역변수로 빼야 할 것같은데?? 
+	int gameboard[6][6]={0};   
 	int again = 0;
 	int stone_x=0; int stone_y=0;
 	int scanfReTwo=0; 
-	int v_gameboard_cpy=0;
-	board(gameboard);                         //초기화 된 게임판 생성
-	  
-	gameboard[2][2] = 1; 	gameboard[3][3] = 1;
-	gameboard[2][3] = 2; 	gameboard[3][2] = 2;
+	int v_gameboard_cpy[6][6]={0};
 	
-	STATUS(gameboard);            //printf로 상황을 출력한다. 
+	board(gameboard);
+	
+	gameboard[2][2] = 1; 	 gameboard[3][3] = 1;
+	gameboard[2][3] = 2; 	 gameboard[3][2] = 2;
+	
+	board(gameboard);                         //보드판을  그린다. 
+	  
+	STATUS(gameboard);            // 흑돌 백돌 개수의 상황을 출력한다. 
 	Stone(gameboard);                 //돌 상황 ox로 시각화. 
 	
 	while(isGameEnd(gameboard) == 0){             //isGameEnd 함수 return0;=>판 다 안참 , return1;=>판 다참. 
 	white:
+		
 		find_space_W(gameboard);   //흰색 차례일때,흰돌을 둘 수 있는 곳을 찾아준다.(3으로 표시) 내부에 reverse함수 들어있음. 
-		stone(gameboard);               //흑돌.백돌 상황 ox로 시각화		
+		Stone(gameboard);               //흑돌.백돌 상황 ox로 시각화		
 		
 		if (is_that_finish(gameboard) == 1){    //가능한 자리(3자리)가  없으면 1 반환, 있으면 0반환
 			
@@ -58,7 +62,7 @@ void main(int argc, char *argv[]) {
 		scanfReTwo = scanf("%d %d",&stone_x,&stone_y);       
 		
 		while(1){                             //scanf가 값 2개를 받으면 무한루프 돌게함 
-			if(scanfReTwo == 2){
+			if(scanf("%d %d",&stone_x,&stone_y) == 2){
 			
 			   if ((gameboard[stone_x][stone_y] == 1) || (gameboard[stone_x][stone_y] == 2)){   //이미 흑돌.백돌이 있는 곳 
 					
@@ -82,8 +86,10 @@ void main(int argc, char *argv[]) {
 				 
 				STATUS(gameboard);                          //백.흑돌 몇개 씩인지 보여주기 
 				
-				 	//!!!flip result보여줄 수 있는 문자열 출력해야해!!!!!// 
-				
+				 	//printf(" ::Flip result::\n");
+					//printf("W: %d, E:%d, N:%d, S:%d ,NW:%d, NE:%d, SW:%d, SE:%d",a,b,c,d,e,f,g,h); 
+					//printf("White has flipped %d othellos!", );
+					
 				gameboard_cpy(v_gameboard_cpy, gameboard); //흑돌 turn준비  
 				find_space_B(gameboard); //흑돌  차례일때,흑돌 둘 수 있는 곳 찾아준다.(3으로 표시) 내부에 reverse함수 들어있음.
 				Stone(gameboard);             //변화들 ox로 시각화해주기 	
@@ -211,7 +217,9 @@ void main(int argc, char *argv[]) {
 			}//while문 끝  
 	
 		}  
-	}
+	} //while문끝  
+	isGameEnd(gameboard[6][6]);
+	
 }//전체함수 끝  
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -222,16 +230,15 @@ int board(int gameboard[6][6]) {
 	for(i=0;i<6;i++){
 			printf("%d|",i);
 		for(j=0;j<6;j++){
-			printf("%d|",gameboard);  
+			printf("0|");  
 		}
 	printf("\n--------------\n");
 	}
 	return gameboard[6][6];
 }
-void STATUS(int stone_x,int stone_y, int gameboard[6][6]){  //흑돌 백돌 개수 나타내는 함수 
+void STATUS(int gameboard[6][6]){  //흑돌 백돌 개수 나타내는 함수 
 	int x,y;
-	x=stone_x;
-	y=stone_y;
+	
 	int White = 0;  int Black = 0;
 
 	for (x = 0; x<6; x++){
@@ -246,7 +253,7 @@ void STATUS(int stone_x,int stone_y, int gameboard[6][6]){  //흑돌 백돌 개수 나�
 				;
 		}
 	}
-	printf("WHITE : %d개, BLACK : %d개 ", White, Black);
+	printf("STATUS - WHITE : %d, BLACK : %d \n", White, Black);
 }
 
 int Stone(int gameboard[6][6]){          //스톤들 ox로 시각화하기  
@@ -399,9 +406,9 @@ int find_space_W(int gameboard[6][6]){       //흰색 차례일때 사용되며 흰돌을 둘 
 
 				v_gameboard_cpy[x][y] = 1; //white turn이 놓은 백돌자리를 복사본에도 지정해줘 
 
-				//Reverse_B_to_W(m_arr_cpy, col, row);   //흰돌로 뒤집힌다  (아직 함수 작성을 못했다ㅠ) 
+				//Reverse_B_to_W(m_arr_cpy, col, row);   //흰돌로 뒤집힌다  
 
-				//v_gameboard_cpy[x][y] = num;             //복사본에 player가 둔 자리에 돌을 놔야하니까 num변수가 필요함. 
+				v_gameboard_cpy[x][y] = num;             //복사본에 player가 둔 자리에 돌을 놔야하니까 num변수가 필요함. 
 
 				if (gameboard_compare(gameboard, v_gameboard_cpy) == 1)  //복사본 원본 그대로면 white가 둘 수 있는 곳이 아니다.  
 					;
