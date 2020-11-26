@@ -78,6 +78,7 @@ void main(int argc, char *argv[]) {
 					Finish();
 					return 0;  //!!!!!!!while문 탈출  
 				break; 
+			}
 			else{
 			below:
 				find_space_W(gameboard);    //가능한 자리들 3으로 표시 해주기 
@@ -89,7 +90,7 @@ void main(int argc, char *argv[]) {
 		
 		////////////////////////////////이후로는 흑돌 턴일 때의 MAIN함수///////////////////////////////////////////// 
 		
-	black:	
+	 
 
 					
 			
@@ -97,6 +98,8 @@ void main(int argc, char *argv[]) {
 		
 	
 	
-}
+	}//while문 끝  
+
+}  //전체함수 끝  
 
 
