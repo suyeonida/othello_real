@@ -10,7 +10,10 @@ int board(int gameboard[6][6]) {
 	}
 	return gameboard[6][6];
 }
-void STATUS(int gameboard[6][6]){  //흑돌 백돌 개수 나타내는 함수 
+void STATUS(int stone_x,int stone_y, gameboard[6][6]){  //흑돌 백돌 개수 나타내는 함수 
+	int x,y;
+	x=stone_x;
+	y=stone_y;
 	int White = 0;  int Black = 0;
 
 	for (x = 0; x<6; x++){
@@ -81,9 +84,9 @@ int put_White_stone(int stone_x, int stone_y, int gameboard[6][6]){   //가능한 �
 void gameboard_cpy(int v_gameboard_cpy[6][6], int gameboard[6][6]){    //배열들을 복사본에 넣으세요~~
 	int x = 0; int y = 0;
 
-	for (x = 0; x <= 7; x++){
+	for (x = 0; x <6; x++){
 		
-		for (y = 0; y <= 7; y++){
+		for (y = 0; y <6; y++){
 			v_gameboard_cpy[x][y] = gameboard[x][y];  //gameboard 배열들을 variable gameboard copy변수에 복사하자
 		}
 	}
@@ -150,8 +153,7 @@ int isGameEnd(int gameboard[6][6]){     //흑돌,백돌로 게임판이 다 차면 게임을 종
 
 int find_space_W(int gameboard[6][6]){       //흰색 차례일때 사용되며 흰돌을 둘 수 있는 곳을 찾아준다.
 	int x = 0; int y = 0;
-	int v_gameboard_cpy[6][6] = { 0 };             
-	int v2_gameboard_cpy[6][6] = { 0 };  //필요 없는 것 같은데?? 
+	int v_gameboard_cpy[6][6] = { 0 };              
 
 	for (x = 0; x<6 ; x++){
 		
@@ -236,5 +238,66 @@ void Finish(int gameboard[6][6]){
 		
 	return;
 }
+
+//black turn 일 떄 추가로 필요한 함수들
+
+int find_space_B(int* gameboard[6][6]){       //흰색 차례일때 사용되며 흰돌을 둘 수 있는 곳을 찾아준다.
+	int x = 0; int y = 0;
+	int v_gameboard_cpy[6][6] = { 0 };             
+
+	for (x = 0; x<6 ; x++){
+		
+		for (y = 0; y <6; y++){
+			
+			gameboard_cpy(v_gameboard_cpy, gameboard);   //gameboard 복사본 만들기  
+
+			if ((v_gameboard_cpy[x][y] == 1) || (v_gameboard_cpy[x][y] == 2))  //복사본에 1,2(백돌, 흑돌)있으면 그냥pass 
+				;
+
+			else if ((v_gameboard_cpy[x][y] == 0) || (v_gameboard_cpy[x][y] == 3)){  //복사본에 아직 채워지지 않은 곳이 있으면  
+
+				int num = 0;                            
+
+				if (v_gameboard_cpy[x][y] == 0)         //복사본에 빈자리라면 num에 0대입  
+					num = 0;
+				else if (v_gameboard_cpy[x][y] == 1)    //복사본에 흑돌이 있다면 num에 1대입  
+					num = 1;
+				else if (v_gameboard_cpy[x][y] == 2)    //복사본에 검은돌이 있다면 num에 2대입   
+					num = 2;
+				else if (v_gameboard_cpy[x][y] == 3)    //복사본에 가능했던 자리였다면 num에 3대입   
+					num = 3;
+
+
+				v_gameboard_cpy[x][y] = 2; //black turn이 놓은 백돌  자리를 복사본에도 지정해줘 
+
+				//Reverse_WtoB(m_arr_cpy, x, y);   //흑돌로 뒤집힌다  (아직 함수 작성을 못했다ㅠ) 
+
+				//v_gameboard_cpy[x][y] = num;             //복사본에 player가 둔 자리에 돌을 놔야하니까 num변수가 필요함. 
+
+				if (gameboard_compare(gameboard, v_gameboard_cpy) == 1)  //복사본 원본 그대로면 white가 둘 수 있는 곳이 아니다.  
+					;
+				else if (gameboard_compare(gameboard, v_gameboard_cpy) == 0){  //복사본 원본 다르다면 무언가 뒤집힌거(white가 둘 수 있는 자리) 
+					gameboard[x][y] = 3;                               //가능한 자리에 3을 적어 표시해줘야지  
+				}
+			}
+		}
+	}
+
+	return gameboard[6][6]; 
+
+}
+
+int put_Black_stone(int stone_x, int stone_y, int gameboard[6][6]){   //흑돌이 가능한 자리 중에서  흑 을 두세요!!
+
+	if (gameboard[stone_x][stone_y] == 3){            //3이 적혀있으면  
+		gameboard[stone_x][stone_y] = 2;              //흑색 돌을 두세요  
+	}
+	else if ((gameboard[stone_x][stone_y] == 1) || (gameboard[stone_x][stone_y] == 2)) //1,2가 적혀있으면(흑.백돌이 이미 있으면) 
+		return gameboard[6][6];                                                        //아무것도 하지말고 나오세요. 
+		
+	return gameboard[6][6];
+	}
+}
+ 
 	
 	 
